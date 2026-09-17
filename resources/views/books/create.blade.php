@@ -43,6 +43,14 @@
         </div>
 
         <div>
+            <label for="isbn">ISBN</label><br>
+            <input type="text" id="isbn" name="isbn" value="{{ old('isbn') }}">
+            @error('isbn')
+                <div style="color: red;">{{ $message }}</div>
+            @enderror
+        </div>
+
+        <div>
             <label for="stok">Stok</label><br>
             <input type="number" id="stok" name="stok" value="{{ old('stok') }}">
             @error('stok')
@@ -51,9 +59,16 @@
         </div>
 
         <div>
-            <label for="kategori">Kategori</label><br>
-            <input type="text" id="kategori" name="kategori" value="{{ old('kategori') }}">
-            @error('kategori')
+            <label for="category_id">Kategori</label><br>
+            <select id="category_id" name="category_id">
+                <option value="">-- Pilih Kategori --</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category['id'] }}" {{ old('category_id') == $category['id'] ? 'selected' : '' }}>
+                        {{ $category['nama_kategori'] }}
+                    </option>
+                @endforeach
+            </select>
+            @error('category_id')
                 <div style="color: red;">{{ $message }}</div>
             @enderror
         </div>
