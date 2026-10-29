@@ -1,31 +1,14 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Daftar Anggota</title>
-    <style>
-        body { font-family: sans-serif; margin: 40px; }
-        table { border-collapse: collapse; width: 100%; margin-top: 16px; }
-        th, td { border: 1px solid #ccc; padding: 8px 12px; text-align: left; }
-        .success { background: #d1fae5; color: #065f46; padding: 10px 14px; border-radius: 4px; margin-top: 16px; }
-        .btn { display: inline-block; padding: 6px 14px; background: #2563eb; color: #fff; text-decoration: none; border-radius: 4px; border: none; cursor: pointer; }
-        form.inline { display: inline; }
-        .search-box { margin-top: 16px; margin-bottom: 16px; }
-        .search-box input { padding: 6px 10px; width: 260px; border: 1px solid #ccc; border-radius: 4px; }
-        .search-box button { padding: 6px 14px; }
-    </style>
-</head>
-<body>
-    <h1>Daftar Anggota</h1>
+@extends('layouts.app')
 
-    @if (session('success'))
-        <div class="success">{{ session('success') }}</div>
-    @endif
+@section('title', 'Daftar Anggota')
+
+@section('content')
+    <h1>Daftar Anggota</h1>
 
     <p><a href="{{ route('members.create') }}" class="btn">+ Tambah Anggota</a></p>
 
-    <form method="GET" action="{{ route('members.index') }}" class="search-box">
-        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama anggota...">
+    <form method="GET" action="{{ route('members.index') }}" style="margin-bottom: 16px;">
+        <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari nama anggota..." style="padding: 6px 10px; width: 260px; border: 1px solid #ccc; border-radius: 4px;">
         <button type="submit" class="btn">Cari</button>
         @if (request('search'))
             <a href="{{ route('members.index') }}" class="btn" style="background: #6b7280;">Reset</a>
@@ -35,8 +18,13 @@
     <table>
         <thead>
             <tr>
-                <th>ID</th><th>Nama</th><th>NIM</th><th>Email</th>
-                <th>No. Telepon</th><th>Alamat</th><th>Status</th><th>Aksi</th>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>NIM</th>
+                <th>Email</th>
+                <th>No. Telepon</th>
+                <th>Status</th>
+                <th>Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -47,11 +35,12 @@
                     <td>{{ $member['nim'] }}</td>
                     <td>{{ $member['email'] }}</td>
                     <td>{{ $member['nomor_telepon'] }}</td>
-                    <td>{{ $member['alamat'] }}</td>
                     <td>{{ ucfirst($member['status']) }}</td>
                     <td>
-                        <a href="{{ route('members.show', $member['id']) }}">Detail</a> |
-                        <a href="{{ route('members.edit', $member['id']) }}">Edit</a> |
+                        <a href="{{ route('members.show', $member['id']) }}">Detail</a>
+                        |
+                        <a href="{{ route('members.edit', $member['id']) }}">Edit</a>
+                        |
                         <form class="inline" action="{{ route('members.destroy', $member['id']) }}" method="POST">
                             @csrf
                             @method('DELETE')
@@ -60,11 +49,12 @@
                     </td>
                 </tr>
             @empty
-                <tr><td colspan="8">Belum ada data anggota.</td></tr>
+                <tr>
+                    <td colspan="7">Belum ada data anggota.</td>
+                </tr>
             @endforelse
         </tbody>
     </table>
 
     {{ $members->appends(request()->query())->links() }}
-</body>
-</html>
+@endsection
